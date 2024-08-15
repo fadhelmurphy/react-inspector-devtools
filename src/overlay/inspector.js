@@ -45,7 +45,7 @@ const getInspectName = (element) => {
   const { children = null, ...props } = fiberNode?.return?.memoizedProps ?? null;
   const imgPath = fiberNode.type === "img" ? props?.src : null;
   const debugSource = fiberNode?._debugSource;
-  const openInEditorLink = debugSource && openInEditorUrl ? getEditorLink(openInEditorUrl, debugSource) : null;
+  const openInEditorLink = debugSource ? getEditorLink(DEFAULT_OPEN_IN_EDITOR_URL, debugSource) : null;
 
   const { fileName, columnNumber, lineNumber } = fiberNode?._debugSource ?? {};
   const path = (fileName || "").split("/");
@@ -73,9 +73,7 @@ export const handleInspectorClick = async (e) => {
   e.stopPropagation();
   const element = e.target;
   const { openInEditorLink } = getInspectName(element);
-  if (openInEditorMethod === "fetch") {
-    await fetch(openInEditorLink);
-  } else {
+  if (openInEditorLink) {
     window.open(openInEditorLink, "_blank");
   }
 };

@@ -90,6 +90,13 @@ export default class Overlay {
         font-size: 11px;
         opacity: 0.7;
       }
+      .tooltip .size {
+        font-size: 11px;
+        text-align: right;
+        padding: 1rem 0;
+        border-top: 1px solid #ffffff75;
+        margin: 0;
+      }
     `;
     this.shadowRoot.appendChild(style);
   }
@@ -97,19 +104,22 @@ export default class Overlay {
   inspect(elements, text, props, imagePath) {
     if (!elements.length) return;
     const { left, bottom, width, height } = elements[0].getBoundingClientRect();
+    const widthStr = `${width}px`;
+    const heightStr = `${height}px`;
     this.overlay.style.left = `${left}px`;
     this.overlay.style.bottom = `${window.innerHeight - bottom}px`;
-    this.overlay.style.width = `${width}px`;
-    this.overlay.style.height = `${height}px`;
-    this.updateTooltipContent(text, props, imagePath);
+    this.overlay.style.width = widthStr;
+    this.overlay.style.height = heightStr;
+    this.updateTooltipContent({text, props, imagePath, width: widthStr, height: heightStr});
   }
 
-  updateTooltipContent(text, props, imagePath) {
+  updateTooltipContent({text, props, imagePath, height, width}) {
     this.tooltip.innerHTML = `
       ${text ? `<p>Path: ${text}</p>` : ``}
       ${props ? `<p>Props: ${props}</p>` : ``}
       ${imagePath ? `<p>Image Path: ${imagePath}</p>` : ``}
       ${text ? `<p class="tip">Click to go to the file</p>` : ``}
+      ${`<p class="size">${height} x ${width}</p>`}
     `;
   }
 
