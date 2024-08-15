@@ -37,6 +37,8 @@ jobs:
           release_name: ${{ steps.extract_tag.outputs.tag }}
           draft: false
           prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload extension assets to release
         uses: actions/upload-release-asset@v1
